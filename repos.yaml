@@ -1,21 +1,18 @@
-version: 3
-projects:
-  - dir: live/aws/main-dev/global/iam
+# repos.yaml
+# Specify TERRAGRUNT_TFPATH environment variable to accomodate setting --default-tf-version
+# Generate json plan via terragrunt for policy checks
+repos:
+  - id: "/.*/"
     workflow: terragrunt
 workflows:
   terragrunt:
-    init:
-      steps:
-        - env:
-            name: TERRAGRUNT_TFPATH
-            command: 'echo "terraform${ATLANTIS_TERRAFORM_VERSION}"'
-        - run: terragrunt init
     plan:
       steps:
         - env:
             name: TERRAGRUNT_TFPATH
             command: 'echo "terraform${ATLANTIS_TERRAFORM_VERSION}"'
-        - run: terragrunt plan -no-color -out $PLANFILE
+        - run: terragrunt plan -no-color -out=$PLANFILE
+        - run: terragrunt show -no-color -json $PLANFILE > $SHOWFILE
     apply:
       steps:
         - env:
