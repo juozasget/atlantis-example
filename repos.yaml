@@ -2,7 +2,7 @@
 # Specify TERRAGRUNT_TFPATH environment variable to accomodate setting --default-tf-version
 # Generate json plan via terragrunt for policy checks
 repos:
-  - id: "/.*/"
+  - id: "/aws/main-dev/global/iam"
     workflow: terragrunt
 workflows:
   terragrunt:
