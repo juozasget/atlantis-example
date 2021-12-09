@@ -1,0 +1,24 @@
+version: 3
+projects:
+  - dir: live/aws/main-dev/global/iam
+    workflow: terragrunt
+workflows:
+  terragrunt:
+    init:
+      steps:
+        - env:
+            name: TERRAGRUNT_TFPATH
+            command: 'echo "terraform${ATLANTIS_TERRAFORM_VERSION}"'
+        - run: terragrunt init
+    plan:
+      steps:
+        - env:
+            name: TERRAGRUNT_TFPATH
+            command: 'echo "terraform${ATLANTIS_TERRAFORM_VERSION}"'
+        - run: terragrunt plan -no-color -out $PLANFILE
+    apply:
+      steps:
+        - env:
+            name: TERRAGRUNT_TFPATH
+            command: 'echo "terraform${ATLANTIS_TERRAFORM_VERSION}"'
+        - run: terragrunt apply -no-color $PLANFILE
